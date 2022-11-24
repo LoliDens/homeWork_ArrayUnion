@@ -14,40 +14,61 @@ namespace homeWork_ArrayUnion
             string[] firstArray = new string[3] { "1", "2", "1" };
             string[] secondArray = new string[3] { "2", "3", "4" };
 
-            string[] result = UnionArrays(firstArray, secondArray);
-            OutputArray(result);
+            List<string> result = new List<string>();
+
+            Console.Write($"Первый массив: ");
+            PrintArray(firstArray);
+            Console.Write("Второй массив: ");
+            PrintArray(secondArray);
+            
+            result = CreateListForArrays(firstArray, secondArray);
+            Console.Write("Объединенный в каллекцию массивы, без повторений: ") ;
+            PrintList(result);
+
             Console.ReadKey();
         }
 
-        static string[] UnionArrays(string[] firstArrray, string[] secondArray)
+        static List<string> CreateListForArrays(string[] firstArray, string[] secondArray)
         {
-            firstArrray = DeleteRepeatsInArray(firstArrray);
-            secondArray = DeleteRepeatsInArray(secondArray);
+            string[] temporaryArray = new string[0];
+            List<string> result = new List<string>();
 
-            string[] result = UnionWithoutRepetition(firstArrray, secondArray);
+            firstArray = DeleteRepeats(firstArray);
+            secondArray = DeleteRepeats(secondArray);
+
+            temporaryArray = UnionArrays(firstArray, secondArray);
+
+            for (int i = 0; i < temporaryArray.Length; i++) 
+            {
+                result.Add(temporaryArray[i]);
+            }
 
             return result;
         }
-               
-        static string[] DeleteRepeatsInArray(string[] array)
+
+        static string[] UnionArrays(string[] firstArray, string[] secondArray)
+        {
+            string[] result = new string[0];
+
+            result = AppendingToArray(result, firstArray);
+            result = AppendingToArray(result, secondArray);
+
+            result = DeleteRepeats(result);
+
+            return result;
+        }
+
+        static string[] DeleteRepeats(string[] array)
         {
             string[] temporaryArray = new string[1] { array[0] };
 
-            temporaryArray = UnionWithoutRepetition(temporaryArray, array);
-
-            array = temporaryArray;
-            return array;
-        }
-
-        static string[] UnionWithoutRepetition(string[] firstArrray, string[] secondArray) 
-        {
-            for (int i = 0; i < secondArray.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 bool isRepeat = false;
 
-                for (int j = 0; j < firstArrray.Length; j++)
+                for (int j = 0; j < temporaryArray.Length; j++)
                 {
-                    if (secondArray[i] == firstArrray[j])
+                    if (array[i] == temporaryArray[j])
                     {
                         isRepeat = true;
                     }
@@ -55,22 +76,15 @@ namespace homeWork_ArrayUnion
 
                 if (isRepeat == false)
                 {
-                    firstArrray = ExtensionArray(firstArrray, secondArray[i]);
+                    temporaryArray = ExpansionArray(temporaryArray, array[i]);
                 }
             }
 
-            return firstArrray;
+            array = temporaryArray;
+            return array;
         }
 
-        static void OutputArray(string[] array) 
-        {
-            for (int i = 0; i < array.Length; i++) 
-            {
-                Console.Write(array[i] + " ");
-            }
-        }
-
-        static string[] ExtensionArray(string[] array, string elemet)
+        static string[] ExpansionArray(string[] array, string elemnet)
         {
             string[] temporaryArray = new string[array.Length + 1];
 
@@ -79,12 +93,39 @@ namespace homeWork_ArrayUnion
                 temporaryArray[i] = array[i];
             }
 
-            temporaryArray[temporaryArray.Length - 1] = elemet;
+            temporaryArray[temporaryArray.Length - 1] = elemnet;
             array = temporaryArray;
-
             return array;
         }
 
+        static string[] AppendingToArray(string[] WrinteArray, string[] ReadArray) 
+        {          
+            for (int i = 0; i < ReadArray.Length; i++)
+            {
+                WrinteArray = ExpansionArray(WrinteArray, ReadArray[i]);
+            }
 
+            return WrinteArray;
+        }
+
+        static void PrintArray(string[] array) 
+        {
+            for (int i = 0; i < array.Length; i++) 
+            {
+                Console.Write(array[i] + " ");
+            }
+
+            Console.WriteLine();
+        }
+
+        static void PrintList(List<string> list) 
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.Write(list[i] + " ");
+            }
+
+            Console.WriteLine();
+        }
     }
 }
