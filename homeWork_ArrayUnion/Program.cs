@@ -11,101 +11,70 @@ namespace homeWork_ArrayUnion
     {
         static void Main(string[] args)
         {
-            string[] firstArray = new string[3] { "1", "2", "1" };
-            string[] secondArray = new string[3] { "2", "3", "4" };
+            string[] firstArray = new string[5] { "1", "2", "1", "4", "1" };
+            string[] secondArray = new string[5] { "2", "3", "4","5","5" };
 
             List<string> result = new List<string>();
 
-            Console.Write($"Первый массив: ");
+            Console.Write("Первый массив: ");
             PrintArray(firstArray);
             Console.Write("Второй массив: ");
             PrintArray(secondArray);
-            
-            result = CreateListForArrays(firstArray, secondArray);
-            Console.Write("Объединенный в каллекцию массивы, без повторений: ") ;
+
+            UnionArraysInList(result, firstArray, secondArray);
+            Console.Write("Объедененный массивы в лист, без повторений: ");
             PrintList(result);
 
             Console.ReadKey();
         }
 
-        static List<string> CreateListForArrays(string[] firstArray, string[] secondArray)
+        static void UnionArraysInList(List<string> list, string[] firstArray, string[] secondArray) 
         {
-            string[] temporaryArray = new string[0];
-            List<string> result = new List<string>();
+            WriteFormArrayToList(list, firstArray);
+            WriteFormArrayToList(list, secondArray);
 
-            firstArray = DeleteRepeats(firstArray);
-            secondArray = DeleteRepeats(secondArray);
-
-            temporaryArray = UnionArrays(firstArray, secondArray);
-
-            for (int i = 0; i < temporaryArray.Length; i++) 
-            {
-                result.Add(temporaryArray[i]);
-            }
-
-            return result;
+            DeleteRepeat(list);
         }
 
-        static string[] UnionArrays(string[] firstArray, string[] secondArray)
+        static void DeleteRepeat(List<string> list) 
         {
-            string[] result = new string[0];
-
-            result = AppendingToArray(result, firstArray);
-            result = AppendingToArray(result, secondArray);
-
-            result = DeleteRepeats(result);
-
-            return result;
-        }
-
-        static string[] DeleteRepeats(string[] array)
-        {
-            string[] temporaryArray = new string[1] { array[0] };
-
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < list.Count;i++) 
             {
                 bool isRepeat = false;
 
-                for (int j = 0; j < temporaryArray.Length; j++)
+                for (int j = i + 1; j < list.Count; j++) 
                 {
-                    if (array[i] == temporaryArray[j])
+                    if (list[i] == list[j]) 
                     {
                         isRepeat = true;
+                        break;
                     }
                 }
 
-                if (isRepeat == false)
+                if (isRepeat == true)
                 {
-                    temporaryArray = ExpansionArray(temporaryArray, array[i]);
-                }
+                    list.RemoveAt(i);
+                    i--;
+                }                
             }
-
-            array = temporaryArray;
-            return array;
         }
 
-        static string[] ExpansionArray(string[] array, string elemnet)
+        static void WriteFormArrayToList(List<string> list, string[] array)
         {
-            string[] temporaryArray = new string[array.Length + 1];
-
             for (int i = 0; i < array.Length; i++)
             {
-                temporaryArray[i] = array[i];
+                list.Add(array[i]);
             }
-
-            temporaryArray[temporaryArray.Length - 1] = elemnet;
-            array = temporaryArray;
-            return array;
         }
 
-        static string[] AppendingToArray(string[] WrinteArray, string[] ReadArray) 
-        {          
-            for (int i = 0; i < ReadArray.Length; i++)
+        static void PrintList(List<string> list) 
+        {
+            for (int i = 0; i < list.Count; i++) 
             {
-                WrinteArray = ExpansionArray(WrinteArray, ReadArray[i]);
+                Console.Write(list[i] + " ");
             }
 
-            return WrinteArray;
+            Console.WriteLine();
         }
 
         static void PrintArray(string[] array) 
@@ -118,14 +87,5 @@ namespace homeWork_ArrayUnion
             Console.WriteLine();
         }
 
-        static void PrintList(List<string> list) 
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                Console.Write(list[i] + " ");
-            }
-
-            Console.WriteLine();
-        }
     }
 }
