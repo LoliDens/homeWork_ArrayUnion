@@ -14,60 +14,37 @@ namespace homeWork_ArrayUnion
             string[] firstArray = new string[5] { "1", "2", "1", "4", "1" };
             string[] secondArray = new string[5] { "2", "3", "4","5","5" };
 
-            List<string> result = new List<string>();
+            List<string> uniqueValues = new List<string>();
 
             Console.Write("Первый массив: ");
-            PrintArray(firstArray);
-            Console.Write("Второй массив: ");
-            PrintArray(secondArray);
+            ShowArray(firstArray);
 
-            UnionArraysInList(result, firstArray, secondArray);
+            Console.Write("Второй массив: ");
+            ShowArray(secondArray);
+
+            SelectUniqueValue(uniqueValues, firstArray);
+            SelectUniqueValue(uniqueValues, secondArray);           
+
             Console.Write("Объедененный массивы в лист, без повторений: ");
-            PrintList(result);
+            ShowList(uniqueValues);
 
             Console.ReadKey();
         }
-
-        static void UnionArraysInList(List<string> list, string[] firstArray, string[] secondArray) 
+      
+        static void SelectUniqueValue(List<string> list, string[] array) 
         {
-            WriteFormArrayToList(list, firstArray);
-            WriteFormArrayToList(list, secondArray);
-
-            DeleteRepeat(list);
-        }
-
-        static void DeleteRepeat(List<string> list) 
-        {
-            for (int i = 0; i < list.Count;i++) 
+            for (int i = 0; i < array.Length; i++) 
             {
-                bool isRepeat = false;
+                string value = array[i];
 
-                for (int j = i + 1; j < list.Count; j++) 
+                if (list.Contains(value) == false) 
                 {
-                    if (list[i] == list[j]) 
-                    {
-                        isRepeat = true;
-                        break;
-                    }
+                    list.Add(value);
                 }
+            }               
+        }      
 
-                if (isRepeat == true)
-                {
-                    list.RemoveAt(i);
-                    i--;
-                }                
-            }
-        }
-
-        static void WriteFormArrayToList(List<string> list, string[] array)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                list.Add(array[i]);
-            }
-        }
-
-        static void PrintList(List<string> list) 
+        static void ShowList(List<string> list) 
         {
             for (int i = 0; i < list.Count; i++) 
             {
@@ -77,7 +54,7 @@ namespace homeWork_ArrayUnion
             Console.WriteLine();
         }
 
-        static void PrintArray(string[] array) 
+        static void ShowArray(string[] array) 
         {
             for (int i = 0; i < array.Length; i++) 
             {
@@ -86,6 +63,5 @@ namespace homeWork_ArrayUnion
 
             Console.WriteLine();
         }
-
     }
 }
